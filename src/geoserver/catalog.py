@@ -962,9 +962,9 @@ class Catalog(object):
                 "Content-type": "application/xml",
                 "Accept": "application/xml"
             }
-            xml = "<style><name>{0}</name><filename>{0}.sld</filename></style>".format(name)
+            xml = "<style><name>" + name + "</name><filename>" + name + ".sld</filename></style>"
             style = Style(self, name, workspace, style_format)
-            headers, response = self.http.request(style.create_href, "POST", xml, headers)
+            headers, response = self.http.request(str(style.create_href), "POST", xml.encode("utf-8"), headers)
             if headers.status < 200 or headers.status > 299: raise UploadError(response)
 
         headers = {
@@ -975,7 +975,7 @@ class Catalog(object):
         body_href = style.body_href
         if raw:
             body_href += "?raw=true"
-        headers, response = self.http.request(body_href, "PUT", data, headers)
+        headers, response = self.http.request(str(body_href), "PUT", data.encode("utf-8"), headers)
         if headers.status < 200 or headers.status > 299: raise UploadError(response)
 
         self._cache.pop(style.href, None)
