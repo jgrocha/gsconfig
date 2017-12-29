@@ -106,5 +106,5 @@ class Style(ResourceInfo):
 
     def update_body(self, body):
         headers = { "Content-Type": self.content_type }
-        self.catalog.http.request(
-            self.body_href, "PUT", body, headers)
+        self.catalog.http.request(str(self.body_href), "PUT", body.encode("utf-8"), headers)
+
